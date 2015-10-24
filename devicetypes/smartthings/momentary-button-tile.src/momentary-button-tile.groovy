@@ -19,8 +19,8 @@
 metadata {
 	definition (name: "Momentary Button Tile", namespace: "smartthings", author: "SmartThings") {
 		capability "Actuator"
-		capability "Switch"
 		capability "Momentary"
+		capability "Button"
 		capability "Sensor"
 	}
 
@@ -30,12 +30,12 @@ metadata {
 
 	// UI tile definitions
 	tiles {
-		standardTile("switch", "device.switch", width: 2, height: 2, canChangeIcon: true) {
+		standardTile("button", "device.button", width: 2, height: 2, canChangeIcon: true) {
 			state "off", label: 'Push', action: "momentary.push", backgroundColor: "#ffffff", nextState: "on"
-			state "on", label: 'Push', action: "momentary.push", backgroundColor: "#53a7c0"
+			state "pushed", label: 'Push', action: "momentary.push", backgroundColor: "#53a7c0"
 		}
-		main "switch"
-		details "switch"
+		main "button"
+		details "button"
 	}
 }
 
@@ -43,15 +43,21 @@ def parse(String description) {
 }
 
 def push() {
-	sendEvent(name: "switch", value: "on", isStateChange: true, display: false)
-	sendEvent(name: "switch", value: "off", isStateChange: true, display: false)
-	sendEvent(name: "momentary", value: "pushed", isStateChange: true)
+    log.trace "pushed"
+	//sendEvent(name: "switch", value: "on", isStateChange: true, display: false)
+//	sendEvent(name: "switch", value: "off", isStateChange: true, display: false)/
+	//sendEvent(name: "button", value: "pushed", isStateChange: true)
+    
+   	sendEvent(name: "button", value: "pushed", data: [buttonNumber: 1], descriptionText: "Pushed button $button was pushed", isStateChange: true)
+	
 }
 
 def on() {
+	log.trace "on"
 	push()
 }
 
 def off() {
+	log.trace "off"
 	push()
 }
