@@ -26,18 +26,22 @@ definition(
 preferences {
     
     	section { 
-			input "buttonDevice1", "capability.momentary", title: "Button1", multiple: false, required: true
-	    
-			input "buttonDevice2", "capability.momentary", title: "Button2", multiple: false, required: true
-	 
-     
-			input "buttonDevice3", "capability.momentary", title: "Button3", multiple: false, required: true
-
-  		  
+	   input( name :"buttonDevice1", type :"capability.momentary", title: "Button1", multiple: false, required: true)	    
+   
+      input(name: "dash1", type: "enum", title: "Dash 1", options: dashButtons())
+    input(name: "dash2", type: "enum", title: "Dash 2", options: dashButtons())
+    input(name: "dash3", type: "enum", title: "Dash 3", options: dashButtons())
+    input(name: "dash4", type: "enum", title: "Dash 4", options: dashButtons())
+   
         }
   
 	 
 }
+
+private dashButtons() {
+   return ["abcd", "qwerty"]
+}
+
 
 
 mappings {
@@ -70,15 +74,19 @@ def getSwitches() {
 // is specified (only on, off, or toggle supported)
 // assumes request body with JSON in format {"command" : "<value>"}
 def updateSwitches() {
-   log.debug state.buttons
-   def buttons = [buttonDevice1,buttonDevice2,buttonDevice3]
+  
+   def buttons = [dash1,dash2,dash3,dash4]
+   log.debug buttons
    request.JSON.id = request.JSON.id as Integer
    log.debug request.JSON.id
-   buttons[ request.JSON.id].push()
-   // if (state.buttons.findIndexOf { it ==  request.JSON.mac} < 0 ){
-   //    state.buttons.push(request.JSON.mac);
-  //  }
-  //  log.debug state.buttons
+  // buttons[ request.JSON.id].push(request.JSON.id + 1)
+   def buttonIndex = buttons.findIndexOf { it ==  request.JSON.mac}
+    log.debug buttonIndex;
+    if (buttonIndex > -1 ){
+          buttonDevice1.push(buttonIndex + 1)
+
+    }
+     log.debug "index"
 
 }
 
@@ -94,9 +102,6 @@ def installed() {
 
 // called when any preferences are changed in this SmartApp. 
 def updated() {
-    log.debug "Updated with settings: ${settings}"
-    log.debug buttonDevice1
-   // state.buttons = [buttonDevice1,buttonDevice2,buttonDevice3]
-    log.debug "buttons: ${state.buttons}"
+
     unsubscribe()
 }
