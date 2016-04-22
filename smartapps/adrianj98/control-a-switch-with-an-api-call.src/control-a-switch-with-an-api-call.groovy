@@ -39,7 +39,7 @@ preferences {
 }
 
 private dashButtons() {
-   return ["abcd", "qwerty"]
+   return ["f0:27:2d:7b:22:df", "qwerty"]
 }
 
 
@@ -77,9 +77,10 @@ def updateSwitches() {
   
    def buttons = [dash1,dash2,dash3,dash4]
    log.debug buttons
-   request.JSON.id = request.JSON.id as Integer
-   log.debug request.JSON.id
-  // buttons[ request.JSON.id].push(request.JSON.id + 1)
+   log.debug  request.JSON 
+ 
+   log.debug  request.JSON.mac
+ 
    def buttonIndex = buttons.findIndexOf { it ==  request.JSON.mac}
     log.debug buttonIndex;
     if (buttonIndex > -1 ){
