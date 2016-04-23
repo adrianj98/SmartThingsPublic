@@ -48,6 +48,8 @@ def push(buttonNumber) {
 //	sendEvent(name: "switch", value: "off", isStateChange: true, display: false)/
 	//sendEvent(name: "button", value: "pushed", isStateChange: true)
     log.trace buttonNumber
+    if (buttonNumber == null)
+     buttonNumber = 1
    	sendEvent(name: "button", value: "pushed", data: [buttonNumber: buttonNumber], descriptionText: "Pushed button $button was pushed", isStateChange: true)
 	
 }
