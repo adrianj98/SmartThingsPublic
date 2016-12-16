@@ -104,5 +104,5 @@ def installed() {
 // called when any preferences are changed in this SmartApp. 
 def updated() {
 
-    unsubscribe()
+   // unsubscribe()
 }
